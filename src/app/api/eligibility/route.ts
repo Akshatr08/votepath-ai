@@ -1,25 +1,27 @@
 import { type NextRequest } from "next/server";
 import { checkEligibility } from "@/lib/utils";
-import { z } from "zod";
-
-const EligibilitySchema = z.object({
-  age: z.number().int().min(0).max(150),
-  isCitizen: z.boolean(),
-  isResident: z.boolean(),
-  region: z.string().min(1).max(100),
-  residencyStatus: z.enum(["citizen", "permanent_resident", "temporary_resident", "other"]),
-});
+import { EligibilitySchema } from "@/lib/validators";
+import { checkRateLimit } from "@/lib/rate-limiter";
 
 export async function POST(request: NextRequest) {
   try {
-    let body: unknown;
-    try {
-      body = await request.json();
-    } catch {
-      return Response.json({ success: false, error: "Invalid request body." }, { status: 400 });
+    // ─── Rate Limiting ───────────────────────────────────────────────────────
+    const ip = request.headers.get("x-forwarded-for") ?? request.headers.get("x-real-ip") ?? "unknown";
+    const limit = checkRateLimit(`eligibility-${ip}`, 20); // More generous for static logic
+    
+    if (!limit.allowed) {
+      return Response.json({ success: false, error: "Too many requests." }, { status: 429 });
     }
 
-    const parsed = EligibilitySchema.safeParse(body);
+    // ─── Input Validation ────────────────────────────────────────────────────
+    let rawBody: unknown;
+    try {
+      rawBody = await request.json();
+    } catch {
+      return Response.json({ success: false, error: "Invalid JSON body." }, { status: 400 });
+    }
+
+    const parsed = EligibilitySchema.safeParse(rawBody);
     if (!parsed.success) {
       return Response.json(
         { success: false, error: "Invalid input.", details: parsed.error.flatten() },
@@ -27,6 +29,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // ─── Logic ───────────────────────────────────────────────────────────────
     const result = checkEligibility(parsed.data);
 
     return Response.json({

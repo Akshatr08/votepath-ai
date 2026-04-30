@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { EligibilityClient } from "@/components/eligibility/EligibilityClient";
-import { AuthProvider } from "@/components/providers/AuthProvider";
 
 // Mock the AuthProvider context
 vi.mock("@/components/providers/AuthProvider", () => ({
@@ -16,11 +15,26 @@ vi.mock("@/components/providers/AuthProvider", () => ({
 
 describe("EligibilityClient Component", () => {
   it("should show eligibility form and handle submission", async () => {
+    // Override fetch mock for this test
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({
+        success: true,
+        data: {
+          eligible: true,
+          confidence: "high",
+          reasons: ["You are likely eligible to vote!"],
+          nextSteps: ["Register now"],
+          disclaimer: "Disclaimer text"
+        }
+      }),
+    });
+
     render(<EligibilityClient />);
     
-    expect(screen.getByText(/Check Your Eligibility/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Eligibility/i })).toBeInTheDocument();
     
-    const regionInput = screen.getByLabelText(/Region/i);
+    const regionInput = screen.getByLabelText(/State \/ Region/i);
     fireEvent.change(regionInput, { target: { value: "Maharashtra" } });
     
     const ageInput = screen.getByLabelText(/Your Age/i);
@@ -35,9 +49,24 @@ describe("EligibilityClient Component", () => {
   });
 
   it("should show ineligibility for under 18", async () => {
+    // Override fetch mock for this test
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({
+        success: true,
+        data: {
+          eligible: false,
+          confidence: "high",
+          reasons: ["You are not eligible to vote yet"],
+          nextSteps: ["Wait until you are 18"],
+          disclaimer: "Disclaimer text"
+        }
+      }),
+    });
+
     render(<EligibilityClient />);
     
-    const regionInput = screen.getByLabelText(/Region/i);
+    const regionInput = screen.getByLabelText(/State \/ Region/i);
     fireEvent.change(regionInput, { target: { value: "California" } });
     
     const ageInput = screen.getByLabelText(/Your Age/i);

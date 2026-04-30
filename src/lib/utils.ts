@@ -67,7 +67,8 @@ export interface EligibilityCheck {
   age: number;
   isCitizen: boolean;
   isResident: boolean;
-  residencyStatus: "citizen" | "permanent_resident" | "temporary_resident" | "other";
+  region?: string;
+  residencyStatus: "citizen" | "permanent_resident" | "visa_holder" | "temporary_resident" | "other";
 }
 
 export interface EligibilityCheckResult {
@@ -159,11 +160,26 @@ export function safeLocalStorageSet(key: string, value: unknown): void {
   }
 }
 
+// ─── HTML Escape (XSS protection) ─────────────────────────────────────────
+
+export function escapeHtml(str: string): string {
+  const map: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#x27;",
+  };
+  return str.replace(/[&<>"']/g, (char) => map[char]);
+}
+
 // ─── Response Formatter ───────────────────────────────────────────────────────
 
 export function formatAIResponse(text: string): string {
-  // Replace markdown bold with styled spans
-  return text
+  // Escape HTML entities first to prevent XSS
+  const escaped = escapeHtml(text);
+  // Then apply markdown formatting
+  return escaped
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.*?)\*/g, "<em>$1</em>")
     .replace(/\n\n/g, "</p><p>")

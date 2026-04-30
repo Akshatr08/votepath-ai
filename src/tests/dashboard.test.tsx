@@ -26,7 +26,7 @@ describe("DashboardClient", () => {
 
   it("should show key navigation cards", () => {
     render(<DashboardClient />);
-    expect(screen.getByText(/Voter Checklist/i)).toBeInTheDocument();
-    expect(screen.getByText(/Polling Locator/i)).toBeInTheDocument();
+    expect(screen.getByText(/Election Roadmap/i)).toBeInTheDocument();
+    expect(screen.getByText(/Full Checklist/i)).toBeInTheDocument();
   });
 });
