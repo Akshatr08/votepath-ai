@@ -10,7 +10,7 @@
 
 ---
 
-## 🌍 Overview
+# 🌍 Overview
 
 **VotePath AI** is a next-generation civic-tech platform designed to simplify the election process through AI-powered guidance, real-time timelines, multilingual accessibility, and intelligent voter assistance.
 
@@ -22,6 +22,13 @@ Built using the **Google Cloud Ecosystem**, the platform helps users:
 - navigate the voting journey step-by-step
 
 with a primary focus on **India 🇮🇳** and the **United States 🇺🇸**.
+
+---
+
+## 🔗 Live Links
+
+- 🌐 Live Platform: https://votepath-ai-873934402022.us-central1.run.app
+- 💻 GitHub Repository: https://github.com/Akshatr08/votepath-ai
 
 ---
 
@@ -284,12 +291,6 @@ We do not endorse any political party or candidate. Users should cross-check cri
 # 🏁 Conclusion
 
 VotePath AI demonstrates how AI and Google Cloud technologies can simplify civic participation by transforming complex election procedures into interactive, personalized, and accessible workflows.
-
----
-
-# 🔗 Repository
-
-https://github.com/Akshatr08/votepath-ai
 
 ---
 
