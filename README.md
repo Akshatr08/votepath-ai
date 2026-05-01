@@ -2,113 +2,295 @@
 
 ![VotePath AI Banner](public/screenshots/dashboard-preview.png)
 
-[![Code Quality](https://img.shields.io/badge/Code%20Quality-100%25-brightgreen.svg)](#)
-[![Security](https://img.shields.io/badge/Security-100%25-brightgreen.svg)](#)
-[![Efficiency](https://img.shields.io/badge/Efficiency-100%25-brightgreen.svg)](#)
-[![Testing](https://img.shields.io/badge/Testing-100%25-brightgreen.svg)](#)
-[![Accessibility](https://img.shields.io/badge/Accessibility-100%25-brightgreen.svg)](#)
-[![Google Services](https://img.shields.io/badge/Google%20Services-100%25-brightgreen.svg)](#)
-
-**VotePath AI** is a premium, state-of-the-art civic-tech platform designed to eliminate the confusion surrounding election processes. Built with the full power of the **Google Cloud Ecosystem**, it provides personalized guidance, AI-powered assistance, and real-time mapping for voters worldwide, with a primary focus on India and the USA.
+![Google Cloud Native](https://img.shields.io/badge/Google%20Cloud-Native-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)
+![Gemini Powered](https://img.shields.io/badge/Gemini-AI%20Powered-8E75FF?style=for-the-badge&logo=googlebard&logoColor=white)
+![Production Ready](https://img.shields.io/badge/Production-Ready-00C853?style=for-the-badge)
+![Secure Architecture](https://img.shields.io/badge/Security-Hardened-red?style=for-the-badge)
+![Fully Tested](https://img.shields.io/badge/Testing-95%25%2B-success?style=for-the-badge)
 
 ---
 
-## ✨ Key Features
+## 🌍 Overview
 
-### 🤖 Gemini-Powered AI Assistant
-Get instant, neutral, and non-partisan answers to any election-related question. From registration deadlines to required IDs, our assistant knows it all.
-- *Service:* Gemini 2.0 Flash via Google Generative AI SDK.
+**VotePath AI** is a next-generation civic-tech platform designed to simplify the election process through AI-powered guidance, real-time timelines, multilingual accessibility, and intelligent voter assistance.
 
-### 🗺️ Smart Polling Locator
-Find your nearest polling booth or registration center with integrated Google Maps.
-- *Service:* Google Maps Platform (JavaScript API, Places, Geocoding).
+Built using the **Google Cloud Ecosystem**, the platform helps users:
+- understand election timelines
+- check eligibility
+- prepare required documents
+- locate polling stations
+- navigate the voting journey step-by-step
 
-### 📈 Interactive Election Timeline
-Visualize the entire election lifecycle. Stay updated with registration openings, candidate filings, and result declarations.
-- *Service:* Framer Motion for premium animations.
-
-### 🛡️ Eligibility & Documentation Checker
-A personalized engine that assesses your eligibility and provides a custom document checklist based on your region and status.
-- *Service:* Vertex AI (for semantic analysis of rules).
-
-### 🌐 Real-time Multi-Language Support
-Seamlessly switch between English, Hindi, and 8+ regional languages.
-- *Service:* Google Cloud Translation API.
+with a primary focus on **India 🇮🇳** and the **United States 🇺🇸**.
 
 ---
 
-## 🏗️ Technical Architecture
+# ✨ Core Features
+
+## 🤖 Gemini-Powered Election Assistant
+
+An interactive AI assistant that provides:
+- election guidance
+- registration support
+- eligibility clarification
+- document requirements
+- voting preparation help
+
+### Powered By
+- Gemini 2.0 Flash
+- Google Generative AI SDK
+
+---
+
+## 🗺️ Smart Polling Locator
+
+Locate nearby:
+- polling booths
+- voter registration centers
+- election offices
+
+with integrated mapping and geolocation intelligence.
+
+### Powered By
+- Google Maps Platform
+- Places API
+- Geocoding API
+
+---
+
+## 📈 Interactive Election Timeline
+
+Track the complete election lifecycle:
+- voter registration
+- verification stages
+- candidate filing
+- polling dates
+- result declarations
+
+through animated, easy-to-understand workflows.
+
+### Powered By
+- Framer Motion
+- Dynamic timeline engine
+
+---
+
+## 🛡️ Eligibility & Documentation Checker
+
+Personalized election readiness engine that:
+- validates voter eligibility
+- checks required documents
+- generates region-specific guidance
+- adapts recommendations dynamically
+
+### Powered By
+- Rule-based workflow engine
+- AI-assisted semantic validation
+
+---
+
+## 🌐 Multi-Language Accessibility
+
+Supports multilingual election guidance for broader accessibility.
+
+### Supported Languages
+- English
+- Hindi
+- Bengali
+- Tamil
+- Telugu
+- Marathi
+- Gujarati
+- Punjabi
+- and more
+
+### Powered By
+- Google Cloud Translation API
+
+---
+
+# 🧭 Interactive Election Workflow
+
+VotePath AI guides users through every stage of the voting journey:
+
+1. Eligibility Verification  
+2. Registration Process  
+3. Document Validation  
+4. Polling Preparation  
+5. Voting Day Guidance  
+6. Result Tracking  
+
+This creates a personalized and easy-to-follow election experience.
+
+---
+
+# 🏗️ Technical Architecture
 
 ```mermaid
 graph TD
-    User([User]) --> NextJS[Next.js App (App Router)]
-    NextJS --> Auth[Firebase Authentication]
-    NextJS --> DB[(Cloud Firestore)]
-    NextJS --> Gemini[Gemini 2.0 Flash AI]
-    NextJS --> GMap[Google Maps Platform]
-    NextJS --> GC[Google Cloud Platform]
-    GC --> NLP[Natural Language AI]
-    GC --> Translate[Cloud Translation API]
-    GC --> Vertex[Vertex AI Embeddings]
+    A[User] --> B[Next.js Application]
+
+    B --> C[Firebase Authentication]
+    B --> D[Cloud Firestore]
+    B --> E[Gemini AI Assistant]
+    B --> F[Google Maps Platform]
+    B --> G[Translation API]
+
+    E --> H[AI Guidance Engine]
+    D --> I[Election Timeline Data]
+    F --> J[Polling Location Services]
+
+    B --> K[Cloud Run Deployment]
 ```
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
-- **Frontend:** Next.js 15+, TypeScript, Tailwind CSS, Framer Motion.
-- **Backend:** Firebase (Auth & Firestore), Next.js API Routes.
-- **AI/ML:** Gemini 2.0 Flash, Vertex AI (Text Embeddings 004).
-- **Google Cloud:** Natural Language API, Translation API.
-- **Testing:** Vitest, React Testing Library.
-- **Infrastructure:** Docker, Cloud Run (Production Ready).
+## Frontend
+- Next.js 15+
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+
+## Backend
+- Firebase Authentication
+- Cloud Firestore
+- Next.js API Routes
+
+## AI & Cloud
+- Gemini 2.0 Flash
+- Google Cloud Translation API
+- Google Maps Platform
+- Vertex AI (Planned Semantic Enhancements)
+
+## Testing
+- Vitest
+- React Testing Library
+
+## Infrastructure
+- Docker
+- Google Cloud Run
 
 ---
 
-## 🚀 Getting Started
+# ☁️ Google Services Integration
 
-### Prerequisites
+VotePath AI deeply integrates Google technologies for intelligence, scalability, and accessibility.
+
+| Service | Purpose |
+|---|---|
+| Google Cloud Run | Scalable deployment |
+| Gemini AI | Conversational election assistant |
+| Firebase Firestore | Real-time election data |
+| Firebase Authentication | Secure user access |
+| Google Maps Platform | Polling station guidance |
+| Translation API | Multi-language support |
+| Vertex AI | Future semantic election workflows |
+
+---
+
+# 🧪 Quality Assurance
+
+VotePath AI follows a security-first and testing-driven architecture.
+
+## Testing
+- Unit testing
+- Integration testing
+- API validation testing
+- Security utility testing
+- Eligibility workflow testing
+
+## Security
+- Rate limiting
+- Input sanitization
+- Hardened CSP headers
+- Secure API handling
+
+## Accessibility
+- WCAG-inspired accessible components
+- Keyboard navigation support
+- ARIA labels
+- Responsive design
+
+## Performance
+- Optimized rendering
+- Efficient API workflows
+- Lightweight modular architecture
+
+---
+
+# 🚀 Getting Started
+
+## Prerequisites
+
 - Node.js 18+
-- Google Cloud Project with enabled APIs (Gemini, Maps, Translation, NLP).
-- Firebase Project.
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Akshatr08/votepath-ai.git
-   cd votepath-ai
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Configure Environment Variables:**
-   Create a `.env.local` file (use `.env.local.example` as a template).
-
-4. **Run development server:**
-   ```bash
-   npm run dev
-   ```
+- Google Cloud Project
+- Firebase Project
 
 ---
 
-## 🧪 Quality Assurance
+## Installation
 
-We maintain a rigorous quality standard across all metrics:
+### Clone Repository
 
-- **Testing:** 230+ unit and integration tests with **95%+ coverage**.
-- **Security:** Hardened CSP headers, XSS sanitization, and rate-limiting.
-- **Accessibility:** WCAG 2.1 Level AA compliant components.
-- **Performance:** Optimized for Core Web Vitals with server-side rendering and edge functions.
+```bash
+git clone https://github.com/Akshatr08/votepath-ai.git
+cd votepath-ai
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Configure Environment Variables
+
+Create a `.env.local` file using `.env.local.example`.
+
+### Start Development Server
+
+```bash
+npm run dev
+```
 
 ---
 
-## 🛡️ Disclaimer
-VotePath AI is a non-partisan educational tool. We do not endorse any political party or candidate. All information should be cross-verified with official local election authorities (e.g., eci.gov.in or vote.gov).
+# 📂 Project Structure
+
+```bash
+/src
+  /app
+  /components
+  /services
+  /utils
+/tests
+/public/screenshots
+```
 
 ---
 
-Built with ❤️ for the **PromptWars Hackathon**.
+# 🛡️ Disclaimer
+
+VotePath AI is a non-partisan educational platform.
+
+We do not endorse any political party or candidate. Users should cross-check critical election information with official authorities such as:
+- https://eci.gov.in
+- https://vote.gov
+
+---
+
+# 🏁 Conclusion
+
+VotePath AI demonstrates how AI and Google Cloud technologies can simplify civic participation by transforming complex election procedures into interactive, personalized, and accessible workflows.
+
+---
+
+# 🔗 Repository
+
+https://github.com/Akshatr08/votepath-ai
+
+---
+
+Built with ❤️ for **PromptWars Hackathon**
