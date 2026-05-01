@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
@@ -45,7 +45,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
     formState: { errors },
     trigger,
   } = useForm<OnboardingData>({
-    resolver: zodResolver(OnboardingSchema),
+    resolver: zodResolver(OnboardingSchema) as Resolver<OnboardingData>,
     defaultValues: {
       country: "IN",
       state: "",

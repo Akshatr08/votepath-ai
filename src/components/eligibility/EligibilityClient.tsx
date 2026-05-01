@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
@@ -27,7 +27,7 @@ export function EligibilityClient() {
   const [apiError, setApiError] = useState<string | null>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<EligibilityFormData>({
-    resolver: zodResolver(EligibilitySchema),
+    resolver: zodResolver(EligibilitySchema) as Resolver<EligibilityFormData>,
     defaultValues: {
       isCitizen: true,
       isResident: true,
