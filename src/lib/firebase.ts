@@ -13,8 +13,12 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Prevent multiple initializations in dev hot-reload
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const isConfigValid = !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined";
+
+// Prevent multiple initializations and handle missing config during build
+const app = getApps().length 
+  ? getApp() 
+  : initializeApp(isConfigValid ? firebaseConfig : { ...firebaseConfig, apiKey: "placeholder-for-build" });
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);

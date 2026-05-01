@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { User, Shield, Eye, Languages, Moon, Sun, Accessibility } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -128,7 +127,7 @@ export function SettingsClient() {
                 <div className="space-y-3">
                   <p className="text-sm font-medium">Font Size</p>
                   <div className="flex gap-2">
-                    {["small", "medium", "large", "xlarge"].map((size) => (
+                    {(["small", "medium", "large", "xlarge"] as const).map((size) => (
                       <button
                         key={size}
                         onClick={() => setFontSize(size)}

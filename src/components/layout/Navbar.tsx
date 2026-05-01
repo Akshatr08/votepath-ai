@@ -19,7 +19,7 @@ export function Navbar() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
-  const { user, profile, isAuthenticated, signInWithGoogle, logout, loading } = useAuthContext();
+  const { user, isAuthenticated, signInWithGoogle, logout, loading } = useAuthContext();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -27,10 +27,11 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close menus when navigation occurs
   useEffect(() => {
-    setIsOpen(false);
-    setUserMenuOpen(false);
-  }, [pathname]);
+    if (isOpen) setIsOpen(false);
+    if (userMenuOpen) setUserMenuOpen(false);
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
 

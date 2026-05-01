@@ -35,7 +35,7 @@ export function EligibilityClient() {
     },
   });
 
-  const isCitizen = watch("isCitizen");
+  // Remove unused isCitizen watch
 
   const onSubmit = async (data: EligibilityFormData) => {
     setLoading(true);
@@ -118,8 +118,8 @@ export function EligibilityClient() {
                 id="elig-residency"
                 {...register("residencyStatus")}
                 onChange={(e) => {
-                  const isCit = e.target.value === "citizen";
-                  // dynamically reflect
+                  // The value is already handled by react-hook-form's register
+                  console.log("Status changed to:", e.target.value);
                 }}
                 className="w-full rounded-xl border border-border bg-secondary px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               >

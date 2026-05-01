@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import {
-  Vote, Sparkles, MapPin, Calendar, ShieldCheck, Globe,
+  Sparkles, MapPin, Calendar, ShieldCheck, Globe,
   CheckCircle2, ArrowRight, ChevronRight, Users, Zap, BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";

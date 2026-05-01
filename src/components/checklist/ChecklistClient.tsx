@@ -76,7 +76,7 @@ export function ChecklistClient() {
   const toggleItem = (id: string) => {
     setItems((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, completed: !item.completed } : item
+        item.id === id ? { ...item, status: item.status === "completed" ? "pending" : "completed" } : item
       )
     );
   };
@@ -87,7 +87,8 @@ export function ChecklistClient() {
     const newItem: ChecklistItem = {
       id: generateId(),
       title: newItemText.trim(),
-      completed: false,
+      description: "",
+      status: "pending",
       category: "general",
     };
     setItems((prev) => [...prev, newItem]);
@@ -100,7 +101,7 @@ export function ChecklistClient() {
     toast.success("Item removed");
   };
 
-  const completedCount = items.filter((i) => i.completed).length;
+  const completedCount = items.filter((i) => i.status === "completed").length;
   const progress = items.length > 0 ? (completedCount / items.length) * 100 : 0;
 
   if (loading) {
@@ -174,7 +175,7 @@ export function ChecklistClient() {
               <div
                 className={cn(
                   "flex items-center gap-4 p-4 rounded-xl border transition-all",
-                  item.completed
+                  item.status === "completed"
                     ? "bg-secondary/30 border-transparent opacity-60"
                     : "bg-card border-border hover:border-primary/30"
                 )}
@@ -182,9 +183,9 @@ export function ChecklistClient() {
                 <button
                   onClick={() => toggleItem(item.id)}
                   className="shrink-0 transition-transform hover:scale-110"
-                  aria-label={item.completed ? "Mark as incomplete" : "Mark as complete"}
+                  aria-label={item.status === "completed" ? "Mark as incomplete" : "Mark as complete"}
                 >
-                  {item.completed ? (
+                  {item.status === "completed" ? (
                     <CheckCircle2 className="w-6 h-6 text-primary" />
                   ) : (
                     <Circle className="w-6 h-6 text-muted-foreground" />
@@ -194,7 +195,7 @@ export function ChecklistClient() {
                   <p
                     className={cn(
                       "text-sm font-medium transition-all",
-                      item.completed && "line-through text-muted-foreground"
+                      item.status === "completed" && "line-through text-muted-foreground"
                     )}
                   >
                     {item.title}

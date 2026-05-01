@@ -68,4 +68,33 @@ describe("Firestore Operations", () => {
       })
     ).resolves.not.toThrow();
   });
+
+  it("updateChecklistItem should call updateDoc", async () => {
+    const { updateDoc } = await import("firebase/firestore");
+    await updateChecklistItem("test-id", []);
+    expect(updateDoc).toHaveBeenCalled();
+  });
+
+  it("getUserProfile should handle missing timestamp", async () => {
+    const { getDoc } = await import("firebase/firestore");
+    (getDoc as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      exists: () => true,
+      data: () => ({ createdAt: null, updatedAt: null })
+    });
+    const result = await getUserProfile("test-uid");
+    expect(result?.createdAt).toBeDefined();
+  });
+
+  it("getUserChecklist should return data if found", async () => {
+    const { getDocs } = await import("firebase/firestore");
+    (getDocs as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      empty: false,
+      docs: [{
+        id: "id",
+        data: () => ({ userId: "uid", createdAt: null, updatedAt: null })
+      }]
+    });
+    const result = await getUserChecklist("uid");
+    expect(result?.id).toBe("id");
+  });
 });

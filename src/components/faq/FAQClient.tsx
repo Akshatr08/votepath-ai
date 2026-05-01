@@ -7,6 +7,7 @@ import { FAQ_DATA } from "@/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import type { FAQItem as FAQItemType } from "@/types";
 
 const CATEGORIES = ["All", ...Array.from(new Set(FAQ_DATA.map((f) => f.category)))];
 
@@ -63,7 +64,7 @@ function FAQItem({ item, index }: { item: (typeof FAQ_DATA)[0]; index: number })
 export function FAQClient() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
-  const [semanticResults, setSemanticResults] = useState<any[]>([]);
+  const [semanticResults, setSemanticResults] = useState<FAQItemType[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
   const handleSemanticSearch = async () => {

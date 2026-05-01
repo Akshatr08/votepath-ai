@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       userId,
       query: sanitizedMessage,
       sentiment: sentiment?.score || 0,
-      entities: entities.slice(0, 5).map((e) => e.name || ""),
+      entities: (entities || []).slice(0, 5).map((e) => e.name || ""),
       timestamp: new Date(),
     }).catch(console.error);
 

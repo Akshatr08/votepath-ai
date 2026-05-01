@@ -9,12 +9,10 @@ const location = process.env.GOOGLE_CLOUD_LOCATION || "us-central1";
 // ─── Vertex AI (Embeddings) ───────────────────────────────────────────────────
 
 const vertexAI = new VertexAI({ project, location });
-const generativeModel = vertexAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
-});
 
 export async function getEmbeddings(text: string): Promise<number[]> {
   try {
+    // @ts-expect-error - preview is not currently in the main VertexAI type but exists in the client
     const embeddingModel = vertexAI.preview.getEmbeddingModel({
       model: "text-embedding-004",
     });

@@ -12,16 +12,16 @@ import { useAuthContext } from "@/components/providers/AuthProvider";
 import { updateUserProfile } from "@/lib/firestore";
 import toast from "react-hot-toast";
 
+import { OnboardingData } from "@/types";
+
 const OnboardingSchema = z.object({
   country: z.string().min(1, "Please select a country"),
   state: z.string().min(1, "Please select a state/region"),
   age: z.coerce.number().int().min(1, "Please enter your age").max(120),
-  isFirstTimeVoter: z.boolean(),
+  isFirstTimeVoter: z.coerce.boolean(),
   votingMethod: z.enum(["online", "offline", "both"]),
   preferredLanguage: z.enum(["en", "hi"]),
 });
-
-type OnboardingForm = z.infer<typeof OnboardingSchema>;
 
 interface OnboardingWizardProps {
   onComplete: () => void;
@@ -44,7 +44,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
     watch,
     formState: { errors },
     trigger,
-  } = useForm<OnboardingForm>({
+  } = useForm<OnboardingData>({
     resolver: zodResolver(OnboardingSchema),
     defaultValues: {
       country: "IN",
@@ -59,7 +59,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
   const selectedCountry = watch("country");
   const stateOptions = selectedCountry === "IN" ? INDIA_STATES : selectedCountry === "US" ? US_STATES : [];
 
-  const STEP_FIELDS: (keyof OnboardingForm)[][] = [
+  const STEP_FIELDS: (keyof OnboardingData)[][] = [
     ["country", "state"],
     ["age", "isFirstTimeVoter"],
     ["votingMethod", "preferredLanguage"],
@@ -70,7 +70,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
     if (valid) setStep((s) => Math.min(s + 1, STEPS.length - 1));
   };
 
-  const onSubmit = async (data: OnboardingForm) => {
+  const onSubmit = async (data: OnboardingData) => {
     if (!user) { onComplete(); return; }
     setSubmitting(true);
     try {
