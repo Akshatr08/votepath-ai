@@ -27,7 +27,7 @@ export function EligibilityClient() {
   const [apiError, setApiError] = useState<string | null>(null);
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm<EligibilityFormData>({
-    resolver: zodResolver(EligibilitySchema),
+    resolver: zodResolver(EligibilitySchema) as any,
     defaultValues: {
       isCitizen: true,
       isResident: true,
