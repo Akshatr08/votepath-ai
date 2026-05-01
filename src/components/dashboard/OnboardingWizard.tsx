@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
@@ -41,11 +41,11 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors },
     trigger,
   } = useForm<OnboardingData>({
-    resolver: zodResolver(OnboardingSchema) as any,
+    resolver: zodResolver(OnboardingSchema),
     defaultValues: {
       country: "IN",
       state: "",
@@ -56,7 +56,10 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
     },
   });
 
-  const selectedCountry = watch("country");
+  const selectedCountry = useWatch({
+    control,
+    name: "country",
+  });
   const stateOptions = selectedCountry === "IN" ? INDIA_STATES : selectedCountry === "US" ? US_STATES : [];
 
   const STEP_FIELDS: (keyof OnboardingData)[][] = [

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Circle, AlertCircle, Trash2, Plus, Save, Share2, Calendar } from "lucide-react";
+import { CheckCircle2, Circle, Trash2, Plus, Calendar } from "lucide-react";
 import { getGoogleCalendarLink } from "@/lib/calendar";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";

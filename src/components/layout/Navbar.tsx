@@ -27,11 +27,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close menus when navigation occurs
-  useEffect(() => {
+  // Close menus when navigation occurs (adjusting state during render)
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
     if (isOpen) setIsOpen(false);
     if (userMenuOpen) setUserMenuOpen(false);
-  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+  }
 
   const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
 
