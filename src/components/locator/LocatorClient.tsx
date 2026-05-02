@@ -73,7 +73,7 @@ function MapControls({ onCenterMe }: { onCenterMe: () => void }) {
   );
 }
 
-export function LocatorClient() {
+export function LocatorClient(): JSX.Element {
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [center, setCenter] = useState(DEFAULT_CENTER);

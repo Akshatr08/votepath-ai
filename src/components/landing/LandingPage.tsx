@@ -93,7 +93,7 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
   );
 }
 
-export function LandingPage() {
+export function LandingPage(): JSX.Element {
   return (
     <div className="overflow-hidden">
       {/* ── Hero ───────────────────────────────────────────── */}

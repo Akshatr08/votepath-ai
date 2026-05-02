@@ -11,17 +11,11 @@ import { SUPPORTED_COUNTRIES, INDIA_STATES, US_STATES } from "@/constants";
 import { useAuthContext } from "@/components/providers/AuthProvider";
 import { updateUserProfile } from "@/lib/firestore";
 import toast from "react-hot-toast";
+import { OnboardingSchema } from "@/lib/validators";
 
 import { OnboardingData } from "@/types";
 
-const OnboardingSchema = z.object({
-  country: z.string().min(1, "Please select a country"),
-  state: z.string().min(1, "Please select a state/region"),
-  age: z.coerce.number().int().min(1, "Please enter your age").max(120),
-  isFirstTimeVoter: z.coerce.boolean(),
-  votingMethod: z.enum(["online", "offline", "both"]),
-  preferredLanguage: z.enum(["en", "hi"]),
-});
+// Schema moved to validators.ts
 
 interface OnboardingWizardProps {
   onComplete: () => void;
@@ -45,7 +39,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
     formState: { errors },
     trigger,
   } = useForm<OnboardingData>({
-    resolver: zodResolver(OnboardingSchema) as unknown as Resolver<OnboardingData>,
+    resolver: zodResolver(OnboardingSchema),
     defaultValues: {
       country: "IN",
       state: "",
@@ -205,9 +199,10 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                             { label: "Yes, first time!", value: "true" },
                             { label: "No, I've voted before", value: "false" },
                           ].map((opt) => (
-                            <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+                            <label key={opt.value} htmlFor={`voter-${opt.value}`} className="flex items-center gap-2 cursor-pointer">
                               <input
                                 type="radio"
+                                id={`voter-${opt.value}`}
                                 value={opt.value}
                                 {...register("isFirstTimeVoter")}
                                 className="accent-primary"
@@ -232,8 +227,8 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                             { value: "offline", label: "In Person" },
                             { value: "both", label: "Both" },
                           ].map((opt) => (
-                            <label key={opt.value} className="flex items-center justify-center gap-2 cursor-pointer border border-border rounded-xl py-2.5 px-3 text-sm hover:border-primary/50 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/10">
-                              <input type="radio" value={opt.value} {...register("votingMethod")} className="sr-only" />
+                            <label key={opt.value} htmlFor={`method-${opt.value}`} className="flex items-center justify-center gap-2 cursor-pointer border border-border rounded-xl py-2.5 px-3 text-sm hover:border-primary/50 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/10">
+                              <input type="radio" id={`method-${opt.value}`} value={opt.value} {...register("votingMethod")} className="sr-only" />
                               {opt.label}
                             </label>
                           ))}

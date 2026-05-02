@@ -31,4 +31,40 @@ describe("FAQ Search API", () => {
     const response = await POST(request);
     expect(response.status).toBe(400);
   });
+
+  it("returns 400 for empty query string", async () => {
+    const request = new NextRequest("http://localhost/api/faq/search", {
+      method: "POST",
+      body: JSON.stringify({ query: "" }),
+    });
+    const response = await POST(request);
+    expect(response.status).toBe(400);
+  });
+
+  it("returns rate limit headers on success", async () => {
+    const request = new NextRequest("http://localhost/api/faq/search", {
+      method: "POST",
+      body: JSON.stringify({ query: "How do I register?" }),
+    });
+    const response = await POST(request);
+    expect(response.headers.get("X-RateLimit-Remaining")).toBeDefined();
+  });
+
+  it("returns 400 for non-string query", async () => {
+    const request = new NextRequest("http://localhost/api/faq/search", {
+      method: "POST",
+      body: JSON.stringify({ query: 123 }),
+    });
+    const response = await POST(request);
+    expect(response.status).toBe(400);
+  });
+
+  it("returns 400 for invalid JSON body", async () => {
+    const request = new NextRequest("http://localhost/api/faq/search", {
+      method: "POST",
+      body: "not-json",
+    });
+    const response = await POST(request);
+    expect(response.status).toBe(400);
+  });
 });

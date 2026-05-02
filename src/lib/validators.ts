@@ -7,9 +7,10 @@ import { z } from "zod";
  * Enforces integer age (0–150), boolean flags, region string, and residency enum.
  */
 export const EligibilitySchema = z.object({
-  age: z.number().int().min(0).max(150),
+  age: z.coerce.number().int().min(0).max(150),
   isCitizen: z.boolean(),
   isResident: z.boolean(),
+  country: z.string().min(1).max(100).default("IN"),
   region: z.string().min(1).max(100),
   residencyStatus: z.enum([
     "citizen",
@@ -59,6 +60,19 @@ export const FAQSearchSchema = z.object({
   query: z.string().min(1, "Query is required").max(500),
 });
 
+/**
+ * Zod schema for validating user onboarding data.
+ * Enforces country/state selection, integer age, and preferences.
+ */
+export const OnboardingSchema = z.object({
+  country: z.string().min(1, "Please select a country"),
+  state: z.string().min(1, "Please select a state/region"),
+  age: z.coerce.number().int().min(1, "Please enter your age").max(120),
+  isFirstTimeVoter: z.coerce.boolean(),
+  votingMethod: z.enum(["online", "offline", "both"]),
+  preferredLanguage: z.enum(["en", "hi"]),
+});
+
 // ─── Type Exports ─────────────────────────────────────────────────────────────
 
 /** Inferred TypeScript type from {@link EligibilitySchema}. */
@@ -72,3 +86,6 @@ export type TranslateInput = z.infer<typeof TranslateSchema>;
 
 /** Inferred TypeScript type from {@link FAQSearchSchema}. */
 export type FAQSearchInput = z.infer<typeof FAQSearchSchema>;
+
+/** Inferred TypeScript type from {@link OnboardingSchema}. */
+export type OnboardingInput = z.infer<typeof OnboardingSchema>;

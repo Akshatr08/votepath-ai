@@ -40,7 +40,7 @@ const FIRST_TIME_TIPS = [
   },
 ];
 
-export function DashboardClient() {
+export function DashboardClient(): JSX.Element {
   const { user, profile, loading, signInWithGoogle, isAuthenticated } = useAuthContext();
   const [activeTab, setActiveTab] = useState<Tab>("roadmap");
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -58,7 +58,7 @@ export function DashboardClient() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -16 }}
@@ -114,6 +114,19 @@ export function DashboardClient() {
             </CardContent>
           </Card>
         ))}
+      </div>
+
+      {/* Quick Links */}
+      <div className="flex flex-wrap gap-4 mb-8">
+        <Link href="/timeline">
+          <Button variant="outline" size="sm" className="rounded-full">Timeline</Button>
+        </Link>
+        <Link href="/faq">
+          <Button variant="outline" size="sm" className="rounded-full">FAQ</Button>
+        </Link>
+        <Link href="/settings">
+          <Button variant="outline" size="sm" className="rounded-full">Settings</Button>
+        </Link>
       </div>
 
       {/* Tabs */}
@@ -243,6 +256,6 @@ export function DashboardClient() {
       {showOnboarding && (
         <OnboardingWizard onComplete={() => setShowOnboarding(false)} />
       )}
-    </div>
+    </main>
   );
 }

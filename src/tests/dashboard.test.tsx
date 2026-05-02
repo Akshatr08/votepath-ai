@@ -29,4 +29,40 @@ describe("DashboardClient", () => {
     expect(screen.getByText(/Election Roadmap/i)).toBeInTheDocument();
     expect(screen.getByText(/Full Checklist/i)).toBeInTheDocument();
   });
+
+  it("renders Timeline link", () => {
+    render(<DashboardClient />);
+    expect(screen.getByText(/Timeline/i)).toBeInTheDocument();
+  });
+
+  it("renders FAQ link", () => {
+    render(<DashboardClient />);
+    expect(screen.getByText(/FAQ/i)).toBeInTheDocument();
+  });
+
+  it("renders Eligibility card", () => {
+    render(<DashboardClient />);
+    expect(screen.getByText(/Eligibility/i)).toBeInTheDocument();
+  });
+
+  it("renders Polling Locator card", () => {
+    render(<DashboardClient />);
+    expect(screen.getByText(/Locate/i)).toBeInTheDocument();
+  });
+
+  it("renders main landmark", () => {
+    render(<DashboardClient />);
+    expect(screen.getByRole("main")).toBeInTheDocument();
+  });
+
+  it("renders Settings link", () => {
+    render(<DashboardClient />);
+    expect(screen.getByText(/Settings/i)).toBeInTheDocument();
+  });
+
+  it("renders user region in stats", () => {
+    render(<DashboardClient />);
+    // profile has no state - should show em dash
+    expect(screen.getByText(/—/)).toBeInTheDocument();
+  });
 });

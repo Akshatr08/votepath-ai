@@ -25,11 +25,11 @@ const FOOTER_LINKS = {
   Legal: [
     { href: "#", label: "Privacy Policy" },
     { href: "#", label: "Terms of Service" },
-    { href: "#", label: "Accessibility" },
+    { href: "/settings", label: "Accessibility" },
   ],
 };
 
-export function Footer() {
+export function Footer(): JSX.Element {
   return (
     <footer
       role="contentinfo"

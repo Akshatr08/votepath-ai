@@ -43,6 +43,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
           "max-w-[80%] px-4 py-3 text-sm leading-relaxed",
           isUser ? "chat-bubble-user" : "chat-bubble-ai"
         )}
+        aria-label={isUser ? "Your message" : "AI Assistant message"}
       >
         {msg.isLoading ? (
           <div className="flex items-center gap-2">
@@ -67,7 +68,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
   );
 }
 
-export function AIAssistant() {
+export function AIAssistant(): JSX.Element {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome",
@@ -274,6 +275,7 @@ export function AIAssistant() {
           <Button
             onClick={() => sendMessage()}
             disabled={!input.trim() || isLoading}
+            aria-busy={isLoading}
             size="icon"
             aria-label="Send message"
             id="chat-send-button"

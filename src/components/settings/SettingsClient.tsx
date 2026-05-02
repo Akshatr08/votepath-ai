@@ -10,7 +10,7 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 
-export function SettingsClient() {
+export function SettingsClient(): JSX.Element {
   const { user, profile, isAuthenticated } = useAuthContext();
   const { fontSize, setFontSize, highContrast, setHighContrast } = useAccessibility();
   const { theme, setTheme } = useTheme();

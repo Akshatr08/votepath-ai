@@ -11,26 +11,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import type { EligibilityResult } from "@/types";
 import Link from "next/link";
 
-const EligibilitySchema = z.object({
-  age: z.coerce.number().int().min(1, "Age is required").max(120, "Please enter a valid age"),
-  isCitizen: z.boolean(),
-  isResident: z.boolean(),
-  region: z.string().min(2, "Please enter your region"),
-  residencyStatus: z.enum(["citizen", "permanent_resident", "temporary_resident", "other"]),
-});
+import { EligibilitySchema } from "@/lib/validators";
 
 type EligibilityFormData = z.infer<typeof EligibilitySchema>;
 
-export function EligibilityClient() {
+export function EligibilityClient(): JSX.Element {
   const [result, setResult] = useState<(EligibilityResult & { disclaimer: string }) | null>(null);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<EligibilityFormData>({
-    resolver: zodResolver(EligibilitySchema) as unknown as Resolver<EligibilityFormData>,
+    resolver: zodResolver(EligibilitySchema),
     defaultValues: {
       isCitizen: true,
       isResident: true,
+      country: "IN",
       residencyStatus: "citizen",
     },
   });
@@ -79,6 +74,22 @@ export function EligibilityClient() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate aria-label="Eligibility check form">
+            {/* Country */}
+            <div>
+              <label htmlFor="elig-country" className="text-sm font-medium mb-1.5 block">Your Country <span aria-hidden="true">*</span></label>
+              <select
+                id="elig-country"
+                {...register("country")}
+                className="w-full rounded-xl border border-border bg-secondary px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                <option value="IN">India</option>
+                <option value="US">United States</option>
+                <option value="UK">United Kingdom</option>
+                <option value="CA">Canada</option>
+                <option value="AU">Australia</option>
+              </select>
+            </div>
+
             {/* Age */}
             <div>
               <label htmlFor="elig-age" className="text-sm font-medium mb-1.5 block">Your Age <span aria-hidden="true">*</span></label>
@@ -129,23 +140,23 @@ export function EligibilityClient() {
             {/* Checkboxes */}
             <fieldset className="space-y-3">
               <legend className="text-sm font-medium mb-2">Confirm your status</legend>
-              <label className="flex items-center gap-3 cursor-pointer">
+              <label htmlFor="elig-citizen" className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   id="elig-citizen"
                   {...register("isCitizen")}
                   className="w-4 h-4 accent-primary rounded"
                 />
-                <span className="text-sm">I am a citizen (or eligible non-citizen) of this country</span>
+                <span id="label-citizen" className="text-sm">I am a citizen (or eligible non-citizen) of this country</span>
               </label>
-              <label className="flex items-center gap-3 cursor-pointer">
+              <label htmlFor="elig-resident" className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   id="elig-resident"
                   {...register("isResident")}
                   className="w-4 h-4 accent-primary rounded"
                 />
-                <span className="text-sm">I am currently residing at a registered address in this region</span>
+                <span id="label-resident" className="text-sm">I am currently residing at a registered address in this region</span>
               </label>
             </fieldset>
 
@@ -162,6 +173,7 @@ export function EligibilityClient() {
               size="lg"
               className="w-full"
               disabled={loading}
+              aria-busy={loading}
               id="check-eligibility-btn"
               aria-label="Check my eligibility"
             >

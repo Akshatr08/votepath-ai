@@ -13,7 +13,7 @@ import { generateId, cn } from "@/lib/utils";
 import { getUserChecklist, saveUserChecklist, updateChecklistItem } from "@/lib/firestore";
 import toast from "react-hot-toast";
 
-export function ChecklistClient() {
+export function ChecklistClient(): JSX.Element {
   const { isAuthenticated, user, profile, signInWithGoogle } = useAuthContext();
   const [items, setItems] = useState<ChecklistItem[]>([]);
   const [checklistId, setChecklistId] = useState<string | null>(null);

@@ -24,7 +24,7 @@ import { safeLocalStorageGet, safeLocalStorageSet } from "@/lib/utils";
  * const [theme, setTheme] = useLocalStorage("app_theme", "light");
  * ```
  */
-export function useLocalStorage<T>(key: string, initialValue: T) {
+export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState<T>(() =>
     safeLocalStorageGet(key, initialValue)
   );

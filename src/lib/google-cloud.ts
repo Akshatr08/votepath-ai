@@ -30,10 +30,25 @@ const vertexAI = new VertexAI({ project, location });
  * @param text - The input text to embed.
  * @returns A numeric vector, or an empty array on failure.
  */
+interface VertexAIPreview {
+  getEmbeddingModel: (opts: { model: string }) => {
+    embedContent: (req: { content: { parts: Array<{ text: string }> } }) => Promise<{
+      embeddings: Array<{ values: number[] }>;
+    }>;
+  };
+}
+
+/**
+ * Generates a text embedding vector using Vertex AI's `text-embedding-004` model.
+ * Used for semantic similarity search in the FAQ feature.
+ *
+ * @param text - The input text to embed.
+ * @returns A numeric vector, or an empty array on failure.
+ */
 export async function getEmbeddings(text: string): Promise<number[]> {
   try {
-    // @ts-expect-error - `preview` namespace exists at runtime but is not in the current VertexAI type definitions
-    const embeddingModel = vertexAI.preview.getEmbeddingModel({
+    const vertexAIPreview = (vertexAI as unknown as { preview: VertexAIPreview }).preview;
+    const embeddingModel = vertexAIPreview.getEmbeddingModel({
       model: "text-embedding-004",
     });
     const result = await embeddingModel.embedContent({ content: { parts: [{ text }] } });

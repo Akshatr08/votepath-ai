@@ -61,7 +61,7 @@ function FAQItem({ item, index }: { item: (typeof FAQ_DATA)[0]; index: number })
   );
 }
 
-export function FAQClient() {
+export function FAQClient(): JSX.Element {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [semanticResults, setSemanticResults] = useState<FAQItemType[]>([]);

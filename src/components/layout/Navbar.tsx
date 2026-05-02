@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, type JSX } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { LanguageSelector } from "./LanguageSelector";
 
-export function Navbar() {
+export function Navbar(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);

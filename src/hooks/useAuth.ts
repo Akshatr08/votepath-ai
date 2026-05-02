@@ -40,7 +40,15 @@ interface AuthState {
  * const { user, isAuthenticated, signInWithGoogle, logout } = useAuth();
  * ```
  */
-export function useAuth() {
+export function useAuth(): {
+  user: User | null;
+  profile: UserProfile | null;
+  loading: boolean;
+  error: string | null;
+  isAuthenticated: boolean;
+  signInWithGoogle: () => Promise<void>;
+  logout: () => Promise<void>;
+} {
   const [state, setState] = useState<AuthState>({
     user: null,
     profile: null,

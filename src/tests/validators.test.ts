@@ -4,6 +4,7 @@ import {
   ChatMessageSchema,
   TranslateSchema,
   FAQSearchSchema,
+  OnboardingSchema,
 } from "@/lib/validators";
 
 // ─── EligibilitySchema ───────────────────────────────────────────────────────
@@ -220,6 +221,46 @@ describe("FAQSearchSchema", () => {
 
   it("should reject missing query", () => {
     const result = FAQSearchSchema.safeParse({});
+    expect(result.success).toBe(false);
+  });
+});
+
+// ─── OnboardingSchema ─────────────────────────────────────────────────────────
+
+describe("OnboardingSchema", () => {
+  it("should accept valid onboarding data", () => {
+    const result = OnboardingSchema.safeParse({
+      country: "IN",
+      state: "Goa",
+      age: "24", // testing coercion
+      isFirstTimeVoter: "true", // testing coercion
+      votingMethod: "online",
+      preferredLanguage: "en",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("should reject invalid age", () => {
+    const result = OnboardingSchema.safeParse({
+      country: "IN",
+      state: "Goa",
+      age: 0,
+      isFirstTimeVoter: true,
+      votingMethod: "online",
+      preferredLanguage: "en",
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("should reject invalid votingMethod", () => {
+    const result = OnboardingSchema.safeParse({
+      country: "IN",
+      state: "Goa",
+      age: 20,
+      isFirstTimeVoter: true,
+      votingMethod: "mail-in", // invalid enum
+      preferredLanguage: "en",
+    });
     expect(result.success).toBe(false);
   });
 });

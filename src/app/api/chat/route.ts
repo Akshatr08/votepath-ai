@@ -5,8 +5,16 @@ import { analyzeSentiment, analyzeEntities } from "@/lib/google-cloud";
 import { logQueryInsight } from "@/lib/firestore";
 import { checkRateLimit } from "@/lib/rate-limiter";
 import { ChatMessageSchema } from "@/lib/validators";
+import { withCors } from "@/lib/security";
 
-export async function POST(request: NextRequest) {
+/**
+ * Handles AI chat requests via Gemini 2.0 Flash.
+ * Enforces rate limiting, sanitizes input, runs parallel NLP analytics,
+ * and returns a Gemini-generated response.
+ * @param request - Next.js incoming request with chat message payload.
+ * @returns JSON with AI-generated text or a structured error.
+ */
+export async function POST(request: NextRequest): Promise<Response> {
   try {
     // ─── Rate Limiting ───────────────────────────────────────────────────────
     const ip = request.headers.get("x-forwarded-for") ?? request.headers.get("x-real-ip") ?? "unknown";
@@ -17,9 +25,9 @@ export async function POST(request: NextRequest) {
         { success: false, error: "Too many requests. Please wait a moment." },
         { 
           status: 429,
-          headers: {
+          headers: withCors({
             "Retry-After": Math.ceil((limit.resetAt - Date.now()) / 1000).toString(),
-          }
+          })
         }
       );
     }
@@ -29,14 +37,17 @@ export async function POST(request: NextRequest) {
     try {
       rawBody = await request.json();
     } catch {
-      return Response.json({ success: false, error: "Invalid JSON body." }, { status: 400 });
+      return Response.json(
+        { success: false, error: "Invalid JSON body." },
+        { status: 400, headers: withCors() }
+      );
     }
 
     const parsed = ChatMessageSchema.safeParse(rawBody);
     if (!parsed.success) {
       return Response.json(
         { success: false, error: "Invalid input.", details: parsed.error.flatten() },
-        { status: 400 }
+        { status: 400, headers: withCors() }
       );
     }
 
@@ -45,7 +56,10 @@ export async function POST(request: NextRequest) {
     
     // Hard check after sanitization
     if (sanitizedMessage.length === 0) {
-      return Response.json({ success: false, error: "Message cannot be empty." }, { status: 400 });
+      return Response.json(
+        { success: false, error: "Message cannot be empty." },
+        { status: 400, headers: withCors() }
+      );
     }
 
     // Process history
@@ -78,31 +92,31 @@ export async function POST(request: NextRequest) {
     if (!text) {
       return Response.json(
         { success: false, error: "No response from AI. Please try again." },
-        { status: 502 }
+        { status: 502, headers: withCors() }
       );
     }
 
     return Response.json(
       { success: true, data: { text } },
       {
-        headers: {
+        headers: withCors({
           "X-RateLimit-Remaining": String(limit.remaining),
           "X-RateLimit-Reset": String(Math.ceil(limit.resetAt / 1000)),
-        },
+        }),
       }
     );
   } catch (err) {
     console.error("[/api/chat] Error:", err);
     return Response.json(
       { success: false, error: "An unexpected error occurred. Please try again." },
-      { status: 500 }
+      { status: 500, headers: withCors() }
     );
   }
 }
 
-export async function OPTIONS() {
+export async function OPTIONS(): Promise<Response> {
   return new Response(null, {
     status: 204,
-    headers: { Allow: "POST, OPTIONS" },
+    headers: withCors({ Allow: "POST, OPTIONS" }),
   });
 }

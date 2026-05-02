@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export function ThreeBackground() {
+export function ThreeBackground(): JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

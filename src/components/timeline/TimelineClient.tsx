@@ -92,7 +92,7 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
   );
 }
 
-export function TimelineClient() {
+export function TimelineClient(): JSX.Element {
   const categories = ["registration", "campaign", "voting", "results"] as const;
 
   return (
