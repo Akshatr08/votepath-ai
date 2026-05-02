@@ -98,7 +98,7 @@ export function EligibilityClient(): JSX.Element {
                 type="number"
                 min={1}
                 max={120}
-                {...register("age")}
+                {...register("age", { valueAsNumber: true })}
                 placeholder="e.g. 22"
                 aria-required="true"
                 aria-describedby={errors.age ? "elig-age-error" : undefined}

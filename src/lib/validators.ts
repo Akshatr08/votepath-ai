@@ -7,7 +7,7 @@ import { z } from "zod";
  * Enforces integer age (0–150), boolean flags, region string, and residency enum.
  */
 export const EligibilitySchema = z.object({
-  age: z.coerce.number().int().min(0).max(150),
+  age: z.number().int().min(0).max(150),
   isCitizen: z.boolean(),
   isResident: z.boolean(),
   country: z.string().min(1).max(100).default("IN"),
@@ -67,8 +67,8 @@ export const FAQSearchSchema = z.object({
 export const OnboardingSchema = z.object({
   country: z.string().min(1, "Please select a country"),
   state: z.string().min(1, "Please select a state/region"),
-  age: z.coerce.number().int().min(1, "Please enter your age").max(120),
-  isFirstTimeVoter: z.union([z.boolean(), z.string().transform((v) => v === "true")]),
+  age: z.number().int().min(1, "Please enter your age").max(120),
+  isFirstTimeVoter: z.boolean(),
   votingMethod: z.enum(["online", "offline", "both"]),
   preferredLanguage: z.enum(["en", "hi"]),
 });

@@ -38,7 +38,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
     control,
     formState: { errors },
     trigger,
-  } = useForm<OnboardingInput>({
+  } = useForm<OnboardingData>({
     resolver: zodResolver(OnboardingSchema),
     defaultValues: {
       country: "IN",
@@ -184,7 +184,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                         type="number"
                         min={1}
                         max={120}
-                        {...register("age")}
+                        {...register("age", { valueAsNumber: true })}
                         placeholder="e.g. 24"
                         className="w-full rounded-xl border border-border bg-secondary px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                         aria-describedby={errors.age ? "age-error" : undefined}
@@ -204,7 +204,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                                 type="radio"
                                 id={`voter-${opt.value}`}
                                 value={opt.value}
-                                {...register("isFirstTimeVoter")}
+                                {...register("isFirstTimeVoter", { setValueAs: (v) => v === "true" || v === true })}
                                 className="accent-primary"
                               />
                               <span className="text-sm">{opt.label}</span>
