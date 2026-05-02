@@ -68,7 +68,7 @@ export const OnboardingSchema = z.object({
   country: z.string().min(1, "Please select a country"),
   state: z.string().min(1, "Please select a state/region"),
   age: z.coerce.number().int().min(1, "Please enter your age").max(120),
-  isFirstTimeVoter: z.coerce.boolean(),
+  isFirstTimeVoter: z.union([z.boolean(), z.string().transform((v) => v === "true")]),
   votingMethod: z.enum(["online", "offline", "both"]),
   preferredLanguage: z.enum(["en", "hi"]),
 });

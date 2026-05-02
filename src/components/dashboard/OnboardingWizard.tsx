@@ -11,7 +11,7 @@ import { SUPPORTED_COUNTRIES, INDIA_STATES, US_STATES } from "@/constants";
 import { useAuthContext } from "@/components/providers/AuthProvider";
 import { updateUserProfile } from "@/lib/firestore";
 import toast from "react-hot-toast";
-import { OnboardingSchema } from "@/lib/validators";
+import { OnboardingSchema, type OnboardingInput } from "@/lib/validators";
 
 import { OnboardingData } from "@/types";
 
@@ -38,7 +38,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
     control,
     formState: { errors },
     trigger,
-  } = useForm<OnboardingData>({
+  } = useForm<OnboardingInput>({
     resolver: zodResolver(OnboardingSchema),
     defaultValues: {
       country: "IN",
