@@ -10,7 +10,7 @@ export const EligibilitySchema = z.object({
   age: z.number().int().min(0).max(150),
   isCitizen: z.boolean(),
   isResident: z.boolean(),
-  country: z.string().min(1).max(100).default("IN"),
+  country: z.string().min(1).max(100),
   region: z.string().min(1).max(100),
   residencyStatus: z.enum([
     "citizen",

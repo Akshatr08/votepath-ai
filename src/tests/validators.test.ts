@@ -15,6 +15,7 @@ describe("EligibilitySchema", () => {
       age: 25,
       isCitizen: true,
       isResident: true,
+      country: "IN",
       region: "Maharashtra",
       residencyStatus: "citizen",
     });
@@ -26,6 +27,7 @@ describe("EligibilitySchema", () => {
       age: -1,
       isCitizen: true,
       isResident: true,
+      country: "IN",
       region: "Test",
       residencyStatus: "citizen",
     });
@@ -37,6 +39,7 @@ describe("EligibilitySchema", () => {
       age: 200,
       isCitizen: true,
       isResident: true,
+      country: "IN",
       region: "Test",
       residencyStatus: "citizen",
     });
@@ -48,6 +51,7 @@ describe("EligibilitySchema", () => {
       age: 25,
       isCitizen: true,
       isResident: true,
+      country: "IN",
       region: "Test",
       residencyStatus: "invalid_status",
     });
@@ -59,6 +63,7 @@ describe("EligibilitySchema", () => {
       age: 25,
       isCitizen: true,
       isResident: true,
+      country: "IN",
       region: "",
       residencyStatus: "citizen",
     });
@@ -72,6 +77,7 @@ describe("EligibilitySchema", () => {
         age: 20,
         isCitizen: true,
         isResident: true,
+        country: "IN",
         region: "Test",
         residencyStatus: status,
       });
@@ -84,6 +90,7 @@ describe("EligibilitySchema", () => {
       age: 18.5,
       isCitizen: true,
       isResident: true,
+      country: "IN",
       region: "Test",
       residencyStatus: "citizen",
     });
