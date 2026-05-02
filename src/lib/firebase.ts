@@ -1,3 +1,13 @@
+/**
+ * Firebase client SDK initialization.
+ *
+ * Configures Firebase Auth, Firestore, Analytics, and Google Sign-In provider.
+ * Handles missing config gracefully during build time and prevents multiple
+ * `initializeApp` calls in hot-reload scenarios.
+ *
+ * @module lib/firebase
+ */
+
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -20,12 +30,17 @@ const app = getApps().length
   ? getApp() 
   : initializeApp(isConfigValid ? firebaseConfig : { ...firebaseConfig, apiKey: "placeholder-for-build" });
 
+/** Firebase Authentication instance. */
 export const auth = getAuth(app);
+
+/** Cloud Firestore database instance. */
 export const db = getFirestore(app);
+
+/** Google OAuth provider configured to always prompt for account selection. */
 export const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: "select_account" });
 
-// Analytics only in browser
+/** Lazily resolved Firebase Analytics instance (browser-only, `null` if unsupported). */
 export const analyticsPromise = isSupported().then((yes) =>
   yes ? getAnalytics(app) : null
 );

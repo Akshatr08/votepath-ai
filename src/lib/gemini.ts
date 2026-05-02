@@ -1,4 +1,15 @@
+/**
+ * Gemini AI model configuration.
+ *
+ * Initializes the Google Generative AI client with a civic-education-focused
+ * system prompt, safety settings, and generation parameters. Used by the
+ * `/api/chat` endpoint for the AI assistant feature.
+ *
+ * @module lib/gemini
+ */
+
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import type { GenerativeModel } from "@google/generative-ai";
 
 const SYSTEM_PROMPT = `You are VotePath AI — a helpful, neutral, and non-partisan civic assistant specialized in election education.
 
@@ -31,7 +42,17 @@ You help with:
 - Vote counting and result timelines
 - Voter rights and privacy`;
 
-export function getGeminiModel() {
+/**
+ * Creates and returns a configured Gemini generative model instance.
+ *
+ * The model uses the `gemini-2.0-flash` variant with:
+ * - A civic-education system instruction enforcing neutrality
+ * - Medium-and-above blocking for hate speech, dangerous content, and harassment
+ * - Conservative generation parameters (low temperature, capped output tokens)
+ *
+ * @throws {Error} If the `GEMINI_API_KEY` environment variable is not set.
+ */
+export function getGeminiModel(): GenerativeModel {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("GEMINI_API_KEY is not configured");

@@ -1,14 +1,30 @@
+/**
+ * Application-wide constants.
+ *
+ * Contains all static data used across the platform including navigation links,
+ * region lists, roadmap steps, checklist items, timeline events, FAQ entries,
+ * myths/facts, and rate-limit configuration.
+ *
+ * @module constants
+ */
+
 import type { ChecklistItem, FAQItem, MythFact, RoadmapStep, TimelineEvent } from "@/types";
 
 // ─── App ─────────────────────────────────────────────────────────────────────
 
+/** Display name of the application. */
 export const APP_NAME = "VotePath AI";
+
+/** Primary tagline shown in the hero section and metadata. */
 export const APP_TAGLINE = "Understand Elections Clearly. Vote Confidently.";
+
+/** Short application description used in SEO metadata. */
 export const APP_DESCRIPTION =
   "Personalized guidance for registration, voting steps, timelines, and election day.";
 
 // ─── Countries & Regions ─────────────────────────────────────────────────────
 
+/** Countries supported by the onboarding wizard. */
 export const SUPPORTED_COUNTRIES = [
   { value: "IN", label: "India" },
   { value: "US", label: "United States" },
@@ -41,7 +57,8 @@ export const US_STATES = [
 
 // ─── Default Roadmap ─────────────────────────────────────────────────────────
 
-export const DEFAULT_ROADMAP_STEPS: RoadmapStep[] = [
+/** Step-by-step voter journey roadmap displayed on the dashboard. */
+export const DEFAULT_ROADMAP_STEPS: readonly RoadmapStep[] = [
   {
     id: "step-1",
     step: 1,
@@ -106,7 +123,8 @@ export const DEFAULT_ROADMAP_STEPS: RoadmapStep[] = [
 
 // ─── Default Checklist ───────────────────────────────────────────────────────
 
-export const DEFAULT_CHECKLIST_ITEMS: ChecklistItem[] = [
+/** Default checklist items for new users who haven't saved a personalized list. */
+export const DEFAULT_CHECKLIST_ITEMS: readonly ChecklistItem[] = [
   {
     id: "chk-1",
     title: "Verify Voter Eligibility",
@@ -167,7 +185,8 @@ export const DEFAULT_CHECKLIST_ITEMS: ChecklistItem[] = [
 
 // ─── Timeline Events ──────────────────────────────────────────────────────────
 
-export const TIMELINE_EVENTS: TimelineEvent[] = [
+/** Illustrative election timeline milestones. Dates are examples — users should verify with authorities. */
+export const TIMELINE_EVENTS: readonly TimelineEvent[] = [
   {
     id: "tl-1",
     title: "Voter Registration Opens",
@@ -244,7 +263,8 @@ export const TIMELINE_EVENTS: TimelineEvent[] = [
 
 // ─── FAQ Data ─────────────────────────────────────────────────────────────────
 
-export const FAQ_DATA: FAQItem[] = [
+/** Curated frequently asked questions covering registration, documents, eligibility, and voting. */
+export const FAQ_DATA: readonly FAQItem[] = [
   {
     id: "faq-1",
     question: "How do I register to vote?",
@@ -305,7 +325,8 @@ export const FAQ_DATA: FAQItem[] = [
 
 // ─── Myths vs Facts ───────────────────────────────────────────────────────────
 
-export const MYTHS_FACTS: MythFact[] = [
+/** Common voting myths paired with factual corrections for voter education. */
+export const MYTHS_FACTS: readonly MythFact[] = [
   {
     id: "mf-1",
     myth: "My vote is public and people can see how I voted.",
@@ -340,6 +361,7 @@ export const MYTHS_FACTS: MythFact[] = [
 
 // ─── Nav Links ───────────────────────────────────────────────────────────────
 
+/** Primary navigation links rendered in the Navbar and Footer. */
 export const NAV_LINKS = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/timeline", label: "Timeline" },
@@ -351,5 +373,8 @@ export const NAV_LINKS = [
 
 // ─── Rate Limiting ────────────────────────────────────────────────────────────
 
+/** Maximum API requests allowed per rate-limit window. */
 export const RATE_LIMIT_REQUESTS = 10;
-export const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+
+/** Rate-limit sliding window duration in milliseconds (1 minute). */
+export const RATE_LIMIT_WINDOW_MS = 60 * 1000;

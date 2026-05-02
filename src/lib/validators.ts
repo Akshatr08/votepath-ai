@@ -2,6 +2,10 @@ import { z } from "zod";
 
 // ─── Shared Validation Schemas ────────────────────────────────────────────────
 
+/**
+ * Zod schema for validating eligibility check API requests.
+ * Enforces integer age (0–150), boolean flags, region string, and residency enum.
+ */
 export const EligibilitySchema = z.object({
   age: z.number().int().min(0).max(150),
   isCitizen: z.boolean(),
@@ -16,6 +20,10 @@ export const EligibilitySchema = z.object({
   ]),
 });
 
+/**
+ * Zod schema for validating chat message API requests.
+ * Enforces a non-empty message, optional conversation history, and language preference.
+ */
 export const ChatMessageSchema = z.object({
   message: z.string().min(1, "Message is required").max(2000),
   history: z
@@ -31,6 +39,10 @@ export const ChatMessageSchema = z.object({
   userId: z.string().optional(),
 });
 
+/**
+ * Zod schema for validating translation API requests.
+ * Enforces non-empty text (up to 5000 chars) and a valid language code.
+ */
 export const TranslateSchema = z.object({
   text: z.string().min(1, "Text is required").max(5000),
   targetLanguage: z
@@ -39,13 +51,24 @@ export const TranslateSchema = z.object({
     .max(10, "Invalid language code"),
 });
 
+/**
+ * Zod schema for validating FAQ semantic search requests.
+ * Enforces a non-empty query string (up to 500 chars).
+ */
 export const FAQSearchSchema = z.object({
   query: z.string().min(1, "Query is required").max(500),
 });
 
 // ─── Type Exports ─────────────────────────────────────────────────────────────
 
+/** Inferred TypeScript type from {@link EligibilitySchema}. */
 export type EligibilityInput = z.infer<typeof EligibilitySchema>;
+
+/** Inferred TypeScript type from {@link ChatMessageSchema}. */
 export type ChatMessageInput = z.infer<typeof ChatMessageSchema>;
+
+/** Inferred TypeScript type from {@link TranslateSchema}. */
 export type TranslateInput = z.infer<typeof TranslateSchema>;
+
+/** Inferred TypeScript type from {@link FAQSearchSchema}. */
 export type FAQSearchInput = z.infer<typeof FAQSearchSchema>;

@@ -1,5 +1,15 @@
 "use client";
 
+/**
+ * Firebase Authentication hook.
+ *
+ * Manages the full auth lifecycle: listens for auth state changes,
+ * auto-creates Firestore user profiles for new sign-ups, and provides
+ * sign-in/sign-out actions.
+ *
+ * @module hooks/useAuth
+ */
+
 import { useState, useEffect, useCallback } from "react";
 import {
   onAuthStateChanged,
@@ -11,6 +21,7 @@ import { auth, googleProvider } from "@/lib/firebase";
 import { getUserProfile, createUserProfile } from "@/lib/firestore";
 import type { UserProfile } from "@/types";
 
+/** Internal state shape for the auth hook. */
 interface AuthState {
   user: User | null;
   profile: UserProfile | null;
@@ -18,6 +29,17 @@ interface AuthState {
   error: string | null;
 }
 
+/**
+ * Provides reactive Firebase authentication state and actions.
+ *
+ * @returns An object containing the current user, profile, loading state,
+ *          error message, authentication status, and action handlers.
+ *
+ * @example
+ * ```tsx
+ * const { user, isAuthenticated, signInWithGoogle, logout } = useAuth();
+ * ```
+ */
 export function useAuth() {
   const [state, setState] = useState<AuthState>({
     user: null,
@@ -56,6 +78,7 @@ export function useAuth() {
     return () => unsubscribe();
   }, []);
 
+  /** Initiates Google OAuth sign-in via popup. */
   const signInWithGoogle = useCallback(async () => {
     try {
       setState((prev) => ({ ...prev, error: null }));
@@ -66,6 +89,7 @@ export function useAuth() {
     }
   }, []);
 
+  /** Signs the current user out of Firebase Auth. */
   const logout = useCallback(async () => {
     try {
       await signOut(auth);

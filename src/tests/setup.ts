@@ -18,20 +18,29 @@ vi.mock("firebase/auth", () => ({
   signOut: vi.fn(),
 }));
 
-vi.mock("firebase/firestore", () => ({
-  getFirestore: vi.fn(),
-  doc: vi.fn(),
-  setDoc: vi.fn(),
-  getDoc: vi.fn().mockResolvedValue({ exists: () => false }),
-  updateDoc: vi.fn(),
-  collection: vi.fn(),
-  addDoc: vi.fn().mockResolvedValue({ id: "mock-id" }),
-  query: vi.fn(),
-  where: vi.fn(),
-  getDocs: vi.fn().mockResolvedValue({ empty: true, docs: [] }),
-  serverTimestamp: vi.fn(),
-  Timestamp: { fromDate: vi.fn() },
-}));
+vi.mock("firebase/firestore", () => {
+  class MockTimestamp {
+    constructor(public seconds: number, public nanoseconds: number) {}
+    toDate() { return new Date(this.seconds * 1000); }
+    static fromDate(date: Date) { return new MockTimestamp(Math.floor(date.getTime() / 1000), 0); }
+    static now() { return MockTimestamp.fromDate(new Date()); }
+  }
+
+  return {
+    getFirestore: vi.fn(),
+    doc: vi.fn(() => ({ id: "mock-doc" })),
+    setDoc: vi.fn(),
+    getDoc: vi.fn().mockResolvedValue({ exists: () => false, data: () => ({}) }),
+    updateDoc: vi.fn(),
+    collection: vi.fn(() => ({ id: "mock-collection" })),
+    addDoc: vi.fn().mockResolvedValue({ id: "mock-id" }),
+    query: vi.fn(() => ({ id: "mock-query" })),
+    where: vi.fn(() => ({ id: "mock-where" })),
+    getDocs: vi.fn().mockResolvedValue({ empty: true, docs: [] }),
+    serverTimestamp: vi.fn(() => "mock-timestamp"),
+    Timestamp: MockTimestamp,
+  };
+});
 
 vi.mock("firebase/analytics", () => ({
   getAnalytics: vi.fn(),

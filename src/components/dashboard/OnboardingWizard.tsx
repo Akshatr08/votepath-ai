@@ -45,7 +45,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
     formState: { errors },
     trigger,
   } = useForm<OnboardingData>({
-    resolver: zodResolver(OnboardingSchema) as Resolver<OnboardingData>,
+    resolver: zodResolver(OnboardingSchema) as unknown as Resolver<OnboardingData>,
     defaultValues: {
       country: "IN",
       state: "",

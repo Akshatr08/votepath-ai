@@ -1,9 +1,20 @@
 "use client";
 
+/**
+ * Root provider composition.
+ *
+ * Wraps the application in theme, auth, accessibility, and error-handling providers.
+ * Order matters: ErrorBoundary is innermost so it catches component errors
+ * while still having access to all context providers above it.
+ *
+ * @module components/providers/Providers
+ */
+
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./AuthProvider";
 import { AccessibilityProvider } from "./AccessibilityProvider";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -15,7 +26,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     >
       <AuthProvider>
         <AccessibilityProvider>
-          {children}
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
           <Toaster
             position="top-right"
             toastOptions={{

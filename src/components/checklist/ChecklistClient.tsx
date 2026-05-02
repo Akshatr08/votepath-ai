@@ -41,10 +41,10 @@ export function ChecklistClient() {
         try {
           setItems(JSON.parse(saved));
         } catch {
-          setItems(DEFAULT_CHECKLIST_ITEMS);
+          setItems([...DEFAULT_CHECKLIST_ITEMS]);
         }
       } else {
-        setItems(DEFAULT_CHECKLIST_ITEMS);
+        setItems([...DEFAULT_CHECKLIST_ITEMS]);
       }
       setLoading(false);
     };
