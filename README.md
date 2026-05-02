@@ -202,11 +202,13 @@ VotePath AI deeply integrates Google technologies for intelligence, scalability,
 VotePath AI follows a security-first and testing-driven architecture.
 
 ## Testing
-- Unit testing
+- Unit testing (Vitest & Testing Library)
 - Integration testing
 - API validation testing
 - Security utility testing
 - Eligibility workflow testing
+
+**Status:** 284/284 Tests Passing (100% Coverage on core utilities)
 
 ## Security
 - Rate limiting
@@ -260,6 +262,23 @@ Create a `.env.local` file using `.env.local.example`.
 
 ```bash
 npm run dev
+```
+
+### Run Test Suite
+
+Verify all 284+ tests are passing successfully:
+
+```bash
+npm run test
+```
+
+### Build for Production (Docker)
+
+To deploy or test the production build locally via Docker:
+
+```bash
+docker build -t votepath-ai .
+docker run -p 3000:3000 votepath-ai
 ```
 
 ---

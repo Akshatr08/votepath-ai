@@ -73,14 +73,15 @@ export function FAQClient() {
     try {
       const res = await fetch("/api/faq/search", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: search }),
       });
       const json = await res.json();
       if (json.success) {
         setSemanticResults(json.data);
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // User-facing error is not actionable; search falls back to local filter
     } finally {
       setIsSearching(false);
     }

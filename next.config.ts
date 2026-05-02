@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://www.gstatic.com https://apis.google.com",
+              "script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://www.gstatic.com https://apis.google.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: https://maps.googleapis.com https://maps.gstatic.com https://lh3.googleusercontent.com",

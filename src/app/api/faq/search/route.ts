@@ -5,6 +5,19 @@ import { sanitizeInput } from "@/lib/utils";
 import { checkRateLimit } from "@/lib/rate-limiter";
 import { FAQSearchSchema } from "@/lib/validators";
 
+// ─── Module-level embedding cache ────────────────────────────────────────────
+// FAQ questions are static — pre-cache their embeddings on first request
+// so subsequent searches don't pay N embedding API calls per query.
+const embeddingCache = new Map<string, number[]>();
+
+async function getCachedEmbedding(text: string): Promise<number[]> {
+  const cached = embeddingCache.get(text);
+  if (cached) return cached;
+  const embedding = await getEmbeddings(text);
+  embeddingCache.set(text, embedding);
+  return embedding;
+}
+
 function cosineSimilarity(a: number[], b: number[]) {
   if (a.length !== b.length) return 0;
   const dotProduct = a.reduce((sum, val, i) => sum + val * b[i], 0);
@@ -37,17 +50,16 @@ export async function POST(request: NextRequest) {
     }
 
     const sanitizedQuery = sanitizeInput(parsed.data.query);
-    const queryEmbedding = await getEmbeddings(sanitizedQuery);
+    const queryEmbedding = await getCachedEmbedding(sanitizedQuery);
 
     if (queryEmbedding.length === 0) {
       return Response.json({ success: false, error: "AI service unavailable." }, { status: 503 });
     }
 
-    // ─── Semantic Search ─────────────────────────────────────────────────────
-    // Note: In production, embeddings would be pre-cached.
+    // ─── Semantic Search (cached FAQ embeddings) ──────────────────────────────
     const results = await Promise.all(
       FAQ_DATA.map(async (faq) => {
-        const faqEmbedding = await getEmbeddings(faq.question);
+        const faqEmbedding = await getCachedEmbedding(faq.question);
         const similarity = cosineSimilarity(queryEmbedding, faqEmbedding);
         return { ...faq, similarity };
       })
@@ -58,7 +70,15 @@ export async function POST(request: NextRequest) {
       .sort((a, b) => b.similarity - a.similarity)
       .slice(0, 5);
 
-    return Response.json({ success: true, data: sortedResults });
+    return Response.json(
+      { success: true, data: sortedResults },
+      {
+        headers: {
+          "X-RateLimit-Remaining": String(limit.remaining),
+          "X-RateLimit-Reset": String(Math.ceil(limit.resetAt / 1000)),
+        },
+      }
+    );
   } catch (error) {
     console.error("[/api/faq/search] Error:", error);
     return Response.json({ success: false, error: "Internal server error" }, { status: 500 });

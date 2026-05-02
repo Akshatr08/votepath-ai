@@ -38,7 +38,11 @@ export function ChecklistClient() {
       // 2. Fallback to localStorage
       const saved = localStorage.getItem("votepath_checklist");
       if (saved) {
-        setItems(JSON.parse(saved));
+        try {
+          setItems(JSON.parse(saved));
+        } catch {
+          setItems(DEFAULT_CHECKLIST_ITEMS);
+        }
       } else {
         setItems(DEFAULT_CHECKLIST_ITEMS);
       }
@@ -135,7 +139,14 @@ export function ChecklistClient() {
               {completedCount} of {items.length} items
             </span>
           </div>
-          <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+          <div
+            className="h-2 w-full bg-secondary rounded-full overflow-hidden"
+            role="progressbar"
+            aria-valuenow={Math.round(progress)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Checklist completion progress"
+          >
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
@@ -150,9 +161,11 @@ export function ChecklistClient() {
       <form onSubmit={addItem} className="flex gap-2 mb-8">
         <input
           type="text"
+          id="new-checklist-item"
           value={newItemText}
           onChange={(e) => setNewItemText(e.target.value)}
           placeholder="Add a custom task..."
+          aria-label="New checklist item"
           className="flex-1 bg-card border border-border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
         />
         <Button type="submit" size="sm">

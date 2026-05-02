@@ -114,6 +114,9 @@ export function SettingsClient() {
                     </div>
                   </div>
                   <button
+                    role="switch"
+                    aria-checked={theme === "dark"}
+                    aria-label="Toggle dark mode"
                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                     className="w-12 h-6 bg-secondary rounded-full relative transition-colors p-1"
                   >
@@ -166,6 +169,9 @@ export function SettingsClient() {
                     </div>
                   </div>
                   <button
+                    role="switch"
+                    aria-checked={highContrast}
+                    aria-label="Toggle high contrast mode"
                     onClick={() => setHighContrast(!highContrast)}
                     className="w-12 h-6 bg-secondary rounded-full relative transition-colors p-1"
                   >

@@ -32,14 +32,22 @@ export async function POST(request: NextRequest) {
     // ─── Logic ───────────────────────────────────────────────────────────────
     const result = checkEligibility(parsed.data);
 
-    return Response.json({
-      success: true,
-      data: {
-        ...result,
-        disclaimer:
-          "⚠️ This is a general eligibility assessment only. Voting rules vary by region and can change. Please verify all requirements with your official local election authority before taking any action.",
+    return Response.json(
+      {
+        success: true,
+        data: {
+          ...result,
+          disclaimer:
+            "⚠️ This is a general eligibility assessment only. Voting rules vary by region and can change. Please verify all requirements with your official local election authority before taking any action.",
+        },
       },
-    });
+      {
+        headers: {
+          "X-RateLimit-Remaining": String(limit.remaining),
+          "X-RateLimit-Reset": String(Math.ceil(limit.resetAt / 1000)),
+        },
+      }
+    );
   } catch (err) {
     console.error("[/api/eligibility] Error:", err);
     return Response.json(

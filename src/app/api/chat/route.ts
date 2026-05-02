@@ -82,7 +82,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return Response.json({ success: true, data: { text } });
+    return Response.json(
+      { success: true, data: { text } },
+      {
+        headers: {
+          "X-RateLimit-Remaining": String(limit.remaining),
+          "X-RateLimit-Reset": String(Math.ceil(limit.resetAt / 1000)),
+        },
+      }
+    );
   } catch (err) {
     console.error("[/api/chat] Error:", err);
     return Response.json(

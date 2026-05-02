@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Search, Navigation, Plus, Minus, Target } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -79,7 +79,7 @@ export function LocatorClient() {
   const [center, setCenter] = useState(DEFAULT_CENTER);
   const [zoom, setZoom] = useState(13);
 
-  const handleUseMyLocation = () => {
+  const handleUseMyLocation = useCallback(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -95,7 +95,7 @@ export function LocatorClient() {
         }
       );
     }
-  };
+  }, []);
 
   return (
     <APIProvider 
@@ -126,15 +126,17 @@ export function LocatorClient() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Enter your zip code or address..."
+                aria-label="Search by zip code or address"
                 className="w-full bg-card border border-border rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               />
             </div>
 
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none" role="group" aria-label="Filter polling locations">
               {["all", "booth", "registration", "help"].map((f) => (
                 <button
                   key={f}
                   onClick={() => setFilter(f)}
+                  aria-pressed={filter === f}
                   className={cn(
                     "px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all",
                     filter === f
@@ -168,7 +170,10 @@ export function LocatorClient() {
                       <div className={cn(
                         "w-2 h-2 rounded-full",
                         loc.status === "open" ? "bg-green-500" : "bg-destructive"
-                      )} />
+                      )}
+                        role="img"
+                        aria-label={loc.status === "open" ? "Open" : "Closed"}
+                      />
                     </div>
                     <p className="text-xs text-muted-foreground mb-3">{loc.address}</p>
                     <div className="flex justify-between items-center text-xs">

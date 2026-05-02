@@ -32,7 +32,15 @@ export async function POST(request: NextRequest) {
     // ─── Logic ───────────────────────────────────────────────────────────────
     const translatedText = await translateText(sanitizedText, targetLanguage);
     
-    return Response.json({ success: true, data: translatedText });
+    return Response.json(
+      { success: true, data: translatedText },
+      {
+        headers: {
+          "X-RateLimit-Remaining": String(limit.remaining),
+          "X-RateLimit-Reset": String(Math.ceil(limit.resetAt / 1000)),
+        },
+      }
+    );
   } catch (error) {
     console.error("[/api/translate] Error:", error);
     return Response.json({ success: false, error: "Internal server error" }, { status: 500 });

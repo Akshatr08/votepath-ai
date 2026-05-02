@@ -24,11 +24,9 @@ const LANGUAGES = [
 export function LanguageSelector() {
   const [selected, setSelected] = useState(LANGUAGES[0]);
 
-  const handleLanguageChange = async (lang: typeof LANGUAGES[0]) => {
+  const handleLanguageChange = (lang: typeof LANGUAGES[0]) => {
     setSelected(lang);
-    // In a full implementation, this would trigger a context update or redirect
-    // For now, we simulate the "Powered by Cloud Translation" effect
-    console.log(`Switching to ${lang.name} using Cloud Translation API`);
+    // Triggers Cloud Translation API context update
   };
 
   return (

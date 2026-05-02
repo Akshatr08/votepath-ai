@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import {
@@ -10,7 +11,12 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { MYTHS_FACTS, APP_TAGLINE } from "@/constants";
-import { ThreeBackground } from "./ThreeBackground";
+
+// Dynamically import Three.js background — heavy WebGL library, no SSR needed
+const ThreeBackground = dynamic(
+  () => import("./ThreeBackground").then((m) => ({ default: m.ThreeBackground })),
+  { ssr: false, loading: () => null }
+);
 
 const FEATURES = [
   {
