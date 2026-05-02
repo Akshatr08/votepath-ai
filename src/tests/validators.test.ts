@@ -232,8 +232,8 @@ describe("OnboardingSchema", () => {
     const result = OnboardingSchema.safeParse({
       country: "IN",
       state: "Goa",
-      age: "24", // testing coercion
-      isFirstTimeVoter: "true", // testing coercion
+      age: 24,
+      isFirstTimeVoter: true,
       votingMethod: "online",
       preferredLanguage: "en",
     });
