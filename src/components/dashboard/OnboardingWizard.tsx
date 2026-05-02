@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useForm, useWatch, type Resolver } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ChevronLeft, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -11,7 +10,7 @@ import { SUPPORTED_COUNTRIES, INDIA_STATES, US_STATES } from "@/constants";
 import { useAuthContext } from "@/components/providers/AuthProvider";
 import { updateUserProfile } from "@/lib/firestore";
 import toast from "react-hot-toast";
-import { OnboardingSchema, type OnboardingInput } from "@/lib/validators";
+import { OnboardingSchema } from "@/lib/validators";
 
 import { OnboardingData } from "@/types";
 

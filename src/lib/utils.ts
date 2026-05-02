@@ -173,6 +173,7 @@ export function checkEligibility(input: EligibilityCheck): EligibilityCheckResul
 
   // Residency check
   if (!input.isResident) {
+    eligible = false;
     confidence = "medium";
     reasons.push("You must be a registered resident in your voting area.");
     nextSteps.push("Ensure you are registered at your current residence.");

@@ -42,6 +42,18 @@ describe("Eligibility Logic", () => {
       });
     });
   });
+
+  it("should return ineligible for non-residents", () => {
+    const result = checkEligibility({
+      age: 25,
+      isCitizen: true,
+      isResident: false,
+      region: "Maharashtra",
+      residencyStatus: "citizen"
+    });
+    expect(result.eligible).toBe(false);
+    expect(result.confidence).toBe("medium");
+  });
 });
 
 describe("Sanitization Utility", () => {

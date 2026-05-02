@@ -12,6 +12,8 @@ import {
 
 describe("Firestore Operations", () => {
   it("getUserProfile should return null on error", async () => {
+    const { getDoc } = await import("firebase/firestore");
+    (getDoc as ReturnType<typeof vi.fn>).mockRejectedValueOnce(new Error("Network Error"));
     const result = await getUserProfile("nonexistent-uid");
     expect(result).toBeNull();
   });
@@ -41,6 +43,8 @@ describe("Firestore Operations", () => {
   });
 
   it("getUserChecklist should return null on error", async () => {
+    const { getDocs } = await import("firebase/firestore");
+    (getDocs as ReturnType<typeof vi.fn>).mockRejectedValueOnce(new Error("Network Error"));
     const result = await getUserChecklist("nonexistent-uid");
     expect(result).toBeNull();
   });

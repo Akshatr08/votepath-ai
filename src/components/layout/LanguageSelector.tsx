@@ -32,7 +32,7 @@ export function LanguageSelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary hover:bg-secondary/80 transition-colors text-xs font-medium border border-border">
+        <button aria-label="Select language" className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary hover:bg-secondary/80 transition-colors text-xs font-medium border border-border">
           <Languages className="w-3.5 h-3.5 text-primary" />
           <span>{selected.name}</span>
           <ChevronDown className="w-3 h-3 text-muted-foreground" />

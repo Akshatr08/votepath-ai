@@ -233,6 +233,7 @@ export function ChecklistClient(): JSX.Element {
                     rel="noopener noreferrer"
                     className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-all"
                     title="Add to Google Calendar"
+                    aria-label={`Add "${item.title}" to Google Calendar`}
                   >
                     <Calendar className="w-4 h-4" />
                   </a>

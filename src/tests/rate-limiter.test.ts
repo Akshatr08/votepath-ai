@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import {
   checkRateLimit,
   resetRateLimit,
@@ -90,5 +90,21 @@ describe("Rate Limiter", () => {
     // Wait for window to expire
     await new Promise((r) => setTimeout(r, 80));
     expect(checkRateLimit(key, 3, 50).allowed).toBe(true);
+  });
+
+  it("should clean up expired entries periodically", async () => {
+    vi.resetModules();
+    vi.useFakeTimers();
+    const { checkRateLimit, getRateLimitInfo } = await import("@/lib/rate-limiter");
+    
+    checkRateLimit("cleanup-test", 10, 1000); // Reset at now + 1000
+    
+    // Fast forward past the 5-minute cleanup interval
+    vi.advanceTimersByTime(5 * 60 * 1000 + 100); 
+    
+    // The entry should be removed from the internal store by the cleanup timer
+    expect(getRateLimitInfo("cleanup-test")).toBeUndefined();
+    
+    vi.useRealTimers();
   });
 });
