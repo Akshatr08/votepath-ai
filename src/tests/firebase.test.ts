@@ -28,7 +28,7 @@ describe("Firebase Initialization", () => {
 
   it("should not re-initialize if app already exists", async () => {
     const firebaseApp = await import("firebase/app");
-    (firebaseApp.getApps as any).mockReturnValue([{}]);
+    vi.mocked(firebaseApp.getApps).mockReturnValue([{}]);
     
     await import("@/lib/firebase");
     
