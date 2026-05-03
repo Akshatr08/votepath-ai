@@ -187,7 +187,11 @@ export function LocatorClient(): JSX.Element {
           </div>
 
           {/* Map Section */}
-          <div className="lg:col-span-2 relative bg-secondary rounded-2xl border border-border overflow-hidden shadow-inner">
+          <div 
+            className="lg:col-span-2 relative bg-secondary rounded-2xl border border-border overflow-hidden shadow-inner"
+            role="region"
+            aria-label="Interactive map of polling locations"
+          >
             <Map
               mapId="DEMO_MAP_ID"
               center={center}
@@ -196,8 +200,6 @@ export function LocatorClient(): JSX.Element {
               onZoomChanged={(ev) => setZoom(ev.detail.zoom)}
               gestureHandling="greedy"
               disableDefaultUI={true}
-              role="region"
-              aria-label="Interactive map of polling locations"
               className="w-full h-full"
             >
               {MOCK_LOCATIONS.map((loc) => (
