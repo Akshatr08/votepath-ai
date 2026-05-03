@@ -262,6 +262,7 @@ export function AIAssistant(): JSX.Element {
             onKeyDown={handleKeyDown}
             placeholder="Ask about elections, registration, voting steps…"
             aria-label="Type your election question"
+            aria-describedby="chat-input-hint"
             rows={1}
             maxLength={1000}
             className="flex-1 resize-none rounded-xl border border-border bg-card px-4 py-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all min-h-[44px] max-h-32"
@@ -284,7 +285,7 @@ export function AIAssistant(): JSX.Element {
             <Send className="w-4 h-4" aria-hidden="true" />
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-2">
+        <p id="chat-input-hint" className="text-xs text-muted-foreground mt-2">
           ⚠️ Verify details with official election authorities. Press Enter to send, Shift+Enter for new line.
         </p>
       </div>

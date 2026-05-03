@@ -31,4 +31,15 @@ describe("Calendar Utility (Extended)", () => {
     const link = getGoogleCalendarLink("Test", "2025-05-12", "Bring ID & documents");
     expect(link).toContain("details=Bring+ID");
   });
+
+  it("should handle invalid dates gracefully (by throwing in this implementation)", () => {
+    expect(() => getGoogleCalendarLink("Test", "not-a-date", "Desc")).toThrow();
+  });
+
+  it("should correctly handle specific time and timezone", () => {
+    // 10 AM IST (UTC+5:30) on May 12, 2025
+    const link = getGoogleCalendarLink("Vote", "2025-05-12T10:00:00+05:30", "Desc");
+    // Should be 04:30:00 UTC
+    expect(link).toContain("dates=20250512T043000Z");
+  });
 });

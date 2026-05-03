@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, type JSX } from "react";
+import React, { useState, useEffect, useRef, useCallback, type JSX } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -36,6 +36,26 @@ export function Navbar(): JSX.Element {
   }
 
   const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
+
+  // Close user menu on outside click or Escape key (WCAG menu pattern)
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const closeUserMenu = useCallback(() => setUserMenuOpen(false), []);
+
+  useEffect(() => {
+    if (!userMenuOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) closeUserMenu();
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeUserMenu();
+    };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [userMenuOpen, closeUserMenu]);
 
   return (
     <>
@@ -128,7 +148,7 @@ export function Navbar(): JSX.Element {
             {!loading && (
               <>
                 {isAuthenticated ? (
-                  <div className="relative">
+                  <div className="relative" ref={userMenuRef}>
                     <button
                       id="user-menu-button"
                       onClick={() => setUserMenuOpen((v) => !v)}

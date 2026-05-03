@@ -52,14 +52,17 @@ You help with:
  *
  * @throws {Error} If the `GEMINI_API_KEY` environment variable is not set.
  */
+let cachedModel: GenerativeModel | null = null;
+
 export function getGeminiModel(): GenerativeModel {
+  if (cachedModel) return cachedModel;
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("GEMINI_API_KEY is not configured");
   }
   const genAI = new GoogleGenerativeAI(apiKey);
 
-  return genAI.getGenerativeModel({
+  cachedModel = genAI.getGenerativeModel({
     model: "gemini-2.0-flash",
     systemInstruction: SYSTEM_PROMPT,
     safetySettings: [
@@ -82,6 +85,7 @@ export function getGeminiModel(): GenerativeModel {
       topP: 0.9,
     },
   });
+  return cachedModel;
 }
 
 export { SYSTEM_PROMPT };

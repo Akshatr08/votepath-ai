@@ -11,9 +11,10 @@
  * Restricts origins to 'self' or allowed domains in production.
  */
 export const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*", // Or specific origin in production
+  "Access-Control-Allow-Origin": process.env.ALLOWED_ORIGIN || "https://votepath-ai.web.app",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, X-RateLimit-Remaining, X-RateLimit-Reset",
+  "X-Content-Type-Options": "nosniff",
 };
 
 /**

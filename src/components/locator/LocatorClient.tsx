@@ -196,6 +196,8 @@ export function LocatorClient(): JSX.Element {
               onZoomChanged={(ev) => setZoom(ev.detail.zoom)}
               gestureHandling="greedy"
               disableDefaultUI={true}
+              role="region"
+              aria-label="Interactive map of polling locations"
               className="w-full h-full"
             >
               {MOCK_LOCATIONS.map((loc) => (

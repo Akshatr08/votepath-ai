@@ -21,7 +21,11 @@ const location = process.env.GOOGLE_CLOUD_LOCATION || "us-central1";
 
 // ─── Vertex AI (Embeddings) ───────────────────────────────────────────────────
 
-const vertexAI = new VertexAI({ project, location });
+let _vertexAI: VertexAI | null = null;
+function getVertexAI(): VertexAI {
+  if (!_vertexAI) _vertexAI = new VertexAI({ project, location });
+  return _vertexAI;
+}
 
 /**
  * Generates a text embedding vector using Vertex AI's `text-embedding-004` model.
@@ -47,7 +51,7 @@ interface VertexAIPreview {
  */
 export async function getEmbeddings(text: string): Promise<number[]> {
   try {
-    const vertexAIPreview = (vertexAI as unknown as { preview: VertexAIPreview }).preview;
+    const vertexAIPreview = (getVertexAI() as unknown as { preview: VertexAIPreview }).preview;
     const embeddingModel = vertexAIPreview.getEmbeddingModel({
       model: "text-embedding-004",
     });
@@ -61,7 +65,11 @@ export async function getEmbeddings(text: string): Promise<number[]> {
 
 // ─── Natural Language API (Analytics) ─────────────────────────────────────────
 
-const languageClient = new LanguageServiceClient();
+let _languageClient: LanguageServiceClient | null = null;
+function getLanguageClient(): LanguageServiceClient {
+  if (!_languageClient) _languageClient = new LanguageServiceClient();
+  return _languageClient;
+}
 
 /**
  * Analyzes the overall sentiment of the given text using the Natural Language API.
@@ -69,12 +77,16 @@ const languageClient = new LanguageServiceClient();
  * @param text - The text to analyze.
  * @returns The document-level sentiment object, or `null` on failure.
  */
-export async function analyzeSentiment(text: string) {
+export async function analyzeSentiment(text: string): Promise<{ score?: number | null; magnitude?: number | null } | null | undefined> {
   try {
-    const [result] = await languageClient.analyzeSentiment({
+    const [result] = await getLanguageClient().analyzeSentiment({
       document: { content: text, type: "PLAIN_TEXT" },
     });
-    return result.documentSentiment;
+    if (!result.documentSentiment) return null;
+    return {
+      score: result.documentSentiment.score,
+      magnitude: result.documentSentiment.magnitude
+    };
   } catch (error) {
     console.error("Error analyzing sentiment:", error);
     return null;
@@ -87,12 +99,15 @@ export async function analyzeSentiment(text: string) {
  * @param text - The text to analyze.
  * @returns An array of entity objects, or an empty array on failure.
  */
-export async function analyzeEntities(text: string) {
+export async function analyzeEntities(text: string): Promise<Array<{ name?: string | null; type?: string | null }> | null | undefined> {
   try {
-    const [result] = await languageClient.analyzeEntities({
+    const [result] = await getLanguageClient().analyzeEntities({
       document: { content: text, type: "PLAIN_TEXT" },
     });
-    return result.entities;
+    return result.entities?.map(e => ({
+      name: e.name,
+      type: e.type ? String(e.type) : null
+    }));
   } catch (error) {
     console.error("Error analyzing entities:", error);
     return [];
@@ -101,7 +116,11 @@ export async function analyzeEntities(text: string) {
 
 // ─── Cloud Translation API ───────────────────────────────────────────────────
 
-const translateClient = new TranslationServiceClient();
+let _translateClient: TranslationServiceClient | null = null;
+function getTranslateClient(): TranslationServiceClient {
+  if (!_translateClient) _translateClient = new TranslationServiceClient();
+  return _translateClient;
+}
 
 /**
  * Translates text into the specified target language using the Cloud Translation API.
@@ -112,7 +131,7 @@ const translateClient = new TranslationServiceClient();
  */
 export async function translateText(text: string, targetLanguage: string): Promise<string> {
   try {
-    const [response] = await translateClient.translateText({
+    const [response] = await getTranslateClient().translateText({
       parent: `projects/${project}/locations/${location}`,
       contents: [text],
       mimeType: "text/plain",
